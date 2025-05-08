@@ -1,0 +1,26 @@
+2025-05-08 01:42:13,867 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2025-05-08 01:42:13,870 INFO supervisord started with pid 1
+2025-05-08 01:42:14,873 INFO spawned: 'nginx' with pid 7
+2025-05-08 01:42:14,875 INFO spawned: 'php-fpm' with pid 8
+2025-05-08 01:42:14,880 WARN exited: nginx (exit status 1; not expected)
+2025-05-08 01:42:15,941 INFO spawned: 'nginx' with pid 11
+2025-05-08 01:42:15,941 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-08 01:42:15,945 WARN exited: nginx (exit status 1; not expected)
+2025-05-08 01:42:17,949 INFO spawned: 'nginx' with pid 12
+2025-05-08 01:42:17,953 WARN exited: nginx (exit status 1; not expected)
+2025-05-08 01:42:20,958 INFO spawned: 'nginx' with pid 13
+2025-05-08 01:42:20,962 WARN exited: nginx (exit status 1; not expected)
+2025-05-08 01:42:21,964 INFO gave up: nginx entered FATAL state, too many start retries too quickly
+2025-05-08 01:43:41,054 WARN received SIGINT indicating exit request
+2025-05-08 01:43:41,054 INFO waiting for php-fpm to die
+2025-05-08 01:43:41,062 INFO stopped: php-fpm (exit status 0)
+2025-05-08 01:53:50,698 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2025-05-08 01:53:50,704 INFO supervisord started with pid 1
+2025-05-08 01:53:51,707 INFO spawned: 'nginx' with pid 7
+2025-05-08 01:53:51,709 INFO spawned: 'php-fpm' with pid 8
+2025-05-08 01:53:52,807 INFO success: nginx entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-08 01:53:52,807 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-08 01:55:32,291 WARN received SIGINT indicating exit request
+2025-05-08 01:55:32,291 INFO waiting for nginx, php-fpm to die
+2025-05-08 01:55:32,309 INFO stopped: php-fpm (exit status 0)
+2025-05-08 01:55:32,400 INFO stopped: nginx (exit status 0)
