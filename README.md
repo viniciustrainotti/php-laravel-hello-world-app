@@ -23,3 +23,13 @@ php artisan serve
 docker build -t laravel-single .
 docker run -it --rm -p 8080:80 laravel-single
 ```
+
+## Add Dynatrace
+
+```sh
+docker login <DT_TENANT>.live.dynatrace.com -u <DT_TENANT>
+# Password: PaaS Token
+docker build --build-arg DT_ENV_ID=<DT_TENANT> -t laravel-hello-world:dynatrace-base -f dockerfile.dynatrace.base .
+docker build -t laravel-single:latest \
+    -f dockerfile.dynatrace.deploy .
+```
