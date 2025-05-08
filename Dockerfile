@@ -16,6 +16,7 @@ RUN apk add --no-cache \
     freetype-dev \
     libxml2-dev \
     postgresql-dev \
+    git \
     && docker-php-ext-install pdo pdo_pgsql mbstring zip intl xml gd
 
 # Install Composer
@@ -25,17 +26,22 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
+RUN composer install --no-dev --optimize-autoloader
+
 # Set correct permissions
 RUN mkdir -p storage/logs bootstrap/cache \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
 # Copy Nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/default.conf /etc/nginx/conf.d/default.conf
 
 # Copy Supervisor config
-COPY supervisord.conf /etc/supervisord.conf
+COPY docker/supervisord.conf /etc/supervisord.conf
+
+# Copy Custom PHP config
+COPY docker/php/conf.d/ /usr/local/etc/php/conf.d/
 
 EXPOSE 80
 
