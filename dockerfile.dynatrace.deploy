@@ -1,5 +1,7 @@
 FROM laravel-hello-world:dynatrace-base
 
+RUN apk update && apk upgrade --no-cache
+
 # Install PHP extensions and system packages
 RUN apk add --no-cache \
     nginx \
@@ -46,6 +48,9 @@ COPY docker/supervisord.conf /etc/supervisord.conf
 
 # Copy Custom PHP config
 COPY docker/php/conf.d/ /usr/local/etc/php/conf.d/
+
+# Fix Vulnerability splish-lite to monorepos
+RUN rm -f vendor/laravel/framework/bin/splitsh-lite
 
 EXPOSE 80
 
