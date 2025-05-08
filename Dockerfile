@@ -24,7 +24,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Create Laravel working directory
 WORKDIR /var/www/html
+
 COPY . .
+
+RUN git config --global --add safe.directory /var/www/html/vendor/theseer/tokenizer \
+    && composer install --no-dev --optimize-autoloader
 
 RUN composer install --no-dev --optimize-autoloader
 
@@ -45,5 +49,6 @@ COPY docker/php/conf.d/ /usr/local/etc/php/conf.d/
 
 EXPOSE 80
 
+#USER www-data
 # Start both Nginx and PHP-FPM using Supervisor
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
