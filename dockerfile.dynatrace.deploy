@@ -1,9 +1,9 @@
 FROM laravel-hello-world:dynatrace-base
 
-RUN apk update && apk upgrade --no-cache
-
 # Install PHP extensions and system packages
-RUN apk add --no-cache \
+RUN apk update \
+    && apk upgrade --no-cache \
+    && apk add --no-cache \
     nginx \
     supervisor \
     bash \
@@ -18,7 +18,6 @@ RUN apk add --no-cache \
     freetype-dev \
     libxml2-dev \
     postgresql-dev \
-    git \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql mysqli mbstring zip intl xml gd
 
 # Install Composer
@@ -29,8 +28,10 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN git config --global --add safe.directory /var/www/html/vendor/theseer/tokenizer \
-    && composer install --no-dev --optimize-autoloader
+RUN apk add --no-cache --virtual .build-deps git \
+    && git config --global --add safe.directory /var/www/html/vendor/theseer/tokenizer \
+    && composer install --no-dev --optimize-autoloader \
+    && apk del .build-deps
 
 # Set correct permissions
 RUN mkdir -p storage/logs bootstrap/cache \
