@@ -8,9 +8,10 @@ RUN apk update \
     supervisor \
     bash \
     curl \
-    libzip-dev \
     zip \
     unzip \
+    && apk add --no-cache --virtual .build-deps \
+    libzip-dev \
     icu-dev \
     oniguruma-dev \
     libpng-dev \
@@ -18,7 +19,11 @@ RUN apk update \
     freetype-dev \
     libxml2-dev \
     postgresql-dev \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mysqli mbstring zip intl xml gd
+    && docker-php-ext-configure gd \
+       --with-freetype=/usr/include/ \
+       --with-jpeg=/usr/include/ \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mysqli mbstring zip intl xml gd \
+    && apk del .build-deps
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

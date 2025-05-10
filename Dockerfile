@@ -1,14 +1,17 @@
 FROM php:8.1-fpm-alpine
 
 # Install PHP extensions and system packages
-RUN apk add --no-cache \
+RUN apk update \
+    && apk upgrade --no-cache \
+    && apk add --no-cache \
     nginx \
     supervisor \
     bash \
     curl \
-    libzip-dev \
     zip \
     unzip \
+    && apk add --no-cache --virtual .build-deps \
+    libzip-dev \
     icu-dev \
     oniguruma-dev \
     libpng-dev \
@@ -16,8 +19,11 @@ RUN apk add --no-cache \
     freetype-dev \
     libxml2-dev \
     postgresql-dev \
-    git \
-    && docker-php-ext-install pdo pdo_pgsql mbstring zip intl xml gd
+    && docker-php-ext-configure gd \
+       --with-freetype=/usr/include/ \
+       --with-jpeg=/usr/include/ \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mysqli mbstring zip intl xml gd \
+    && apk del .build-deps
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -27,10 +33,10 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN git config --global --add safe.directory /var/www/html/vendor/theseer/tokenizer \
-    && composer install --no-dev --optimize-autoloader
-
-RUN composer install --no-dev --optimize-autoloader
+RUN apk add --no-cache --virtual .build-deps git \
+    && git config --global --add safe.directory /var/www/html/vendor/theseer/tokenizer \
+    && composer install --no-dev --optimize-autoloader \
+    && apk del .build-deps
 
 # Set correct permissions
 RUN mkdir -p storage/logs bootstrap/cache \
@@ -46,6 +52,9 @@ COPY docker/supervisord.conf /etc/supervisord.conf
 
 # Copy Custom PHP config
 COPY docker/php/conf.d/ /usr/local/etc/php/conf.d/
+
+# Fix Vulnerability splish-lite to monorepos
+RUN rm -f vendor/laravel/framework/bin/splitsh-lite
 
 EXPOSE 80
 
