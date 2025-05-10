@@ -19,7 +19,7 @@ RUN apk add --no-cache \
     libxml2-dev \
     postgresql-dev \
     git \
-    && docker-php-ext-install pdo pdo_pgsql mbstring zip intl xml gd
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mysqli mbstring zip intl xml gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -31,8 +31,6 @@ COPY . .
 
 RUN git config --global --add safe.directory /var/www/html/vendor/theseer/tokenizer \
     && composer install --no-dev --optimize-autoloader
-
-RUN composer install --no-dev --optimize-autoloader
 
 # Set correct permissions
 RUN mkdir -p storage/logs bootstrap/cache \
