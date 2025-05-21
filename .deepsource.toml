@@ -1,5 +1,13 @@
 version = 1
 
+test_patterns = [
+    "tests/**"
+]
+
+exclude_patterns = [
+    ".github/**"
+]
+
 [[analyzers]]
 name = "javascript"
 
