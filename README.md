@@ -16,7 +16,7 @@ This is repository Hello World App PHP with Laravel 10.
 cp .env.example .env
 composer update
 php artisan serve
-# Generate APP_KEY env
+# Generate APP_KEY env or set directly into .env
 ```
 
 ## Docker
