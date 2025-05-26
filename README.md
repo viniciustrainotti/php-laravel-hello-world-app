@@ -1,4 +1,4 @@
-# Hello World PHP with Laravel
+# Hello World PHP with Laravel and Dynatrace Setup
 
 This is repository Hello World App PHP with Laravel 10.
 
