@@ -4,3 +4,4 @@ tests
 storage/*.key
 vendor
 node_modules
+.deepsource.toml
